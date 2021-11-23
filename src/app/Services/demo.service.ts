@@ -14,7 +14,14 @@ export class DemoService {
     return this.ourClient.get(this.BaseUrl);
   }
 
-  getDataById(id: number) {
-    return this.ourClient.get(`${this.BaseUrl}/&page=${id}`);
+  getDataByPageNumber(page: number) {
+    return this.ourClient.get(`${this.BaseUrl}/&page=${page}`);
   }
+
+
+
+
 }
+
+
+
