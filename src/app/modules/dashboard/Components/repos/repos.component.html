@@ -1,0 +1,48 @@
+<div class="container-fluid px-0">
+    <div class="row m-0 w-100">
+
+        <div class="col-12 d-flex justify-content-center">
+            <!-- Pagination -->
+            <nav aria-label="Page  navigation example">
+                <ul class="pagination animate__animated animate__fadeInLeft">
+                    <li class="page-item">
+                        <a class="myIcon" (click)="prevPage()">Previous</a>
+                    </li>
+                    <li class="page-item" *ngFor="let number of pageNumbers">
+                        <a class="myIcon" (click)="dataPage(number)">{{number}}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="myIcon" (click)="nextPage()">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+        <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-center">
+            <h4 class="mx-5">Page: {{ myPage }}</h4>
+
+        </div>
+        <!-- Content of the Repos -->
+
+        <div class="row w-100 mx-0 my-4 animate__animated animate__fadeInUp " *ngFor="let r of myData.items">
+            <div class="col-12 col-md-3  ">
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center justify-content-md-end ownerAvatar">
+                        <img src="{{ r.owner.avatar_url }}" />
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-9">
+                <h3 class="reposName text-center text-md-start py-0 pt-3 pb-md-2 pt-md-0">{{ r.name.toUpperCase() }}</h3>
+                <p [ngClass]="{'text-danger':r.description == null}" class="reposDesc text-center text-md-start py-0 pt-md-2">{{ r.description? r.description : "There's no description." }}</p>
+                <div class="py-0 py-md-2 text-center text-md-start">
+                    <span class="reposStars  p-2">Stars: {{ r.stargazers_count }}</span>
+                    <span class="reposIssues mx-2 p-2">Issues: {{ r.open_issues }}</span> <br class="d-md-none">
+                    <span class="reposTime">Submitted {{ getTime(r.pushed_at) }} days ago by <b><i>{{ r.owner.login.charAt(0).toUpperCase() + r.owner.login.slice(1) }}</i></b></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

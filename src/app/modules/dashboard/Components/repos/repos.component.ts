@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DemoService } from './../../Services/demo.service';
+import { DemoService } from 'src/app/Services/demo.service';
 
 @Component({
   selector: 'app-repos',
@@ -7,6 +7,17 @@ import { DemoService } from './../../Services/demo.service';
   styleUrls: ['./repos.component.css'],
 })
 export class ReposComponent implements OnInit {
+ //------------------------------------------------------
+  // my Variables
+  //------------------------------------------------------
+
+  myData: any;
+  nowDay: any = new Date();
+  diffDays: any;
+  myPage: number = 1;
+  pageNumbers = [1,2,3,4,5,6,7,8,9,10];
+
+
   //------------------------------------------------------
   // Calling the service in the constructor to get all the data from it, and
   // give it an access modifier "Private" so I can call it in all of my Functions.
@@ -14,28 +25,14 @@ export class ReposComponent implements OnInit {
 
   constructor(private ourService: DemoService) {}
 
-  //------------------------------------------------------
-  // my Variables
-  //------------------------------------------------------
 
-  myData: any;
-  nowDay: any = new Date();
-  diffDays: any;
-  myId: number = 1;
 
   //------------------------------------------------------
   // Call the Backend to get all the data from the Service
   //------------------------------------------------------
 
   ngOnInit(): void {
-    this.ourService.getDataById(this.myId).subscribe(
-      (res) => {
-        this.myData = res;
-      },
-      (err) => {
-        alert(err);
-      }
-    );
+  this.dataPage(1);
   }
 
   //------------------------------------------------------
@@ -53,14 +50,12 @@ export class ReposComponent implements OnInit {
   // Function to get the Id from the click on number of the page
   //------------------------------------------------------
 
-  dataPage(e: any) {
-    this.myId = parseInt(e.target.textContent);
-    console.log(parseInt(e.target.textContent));
+  dataPage(pageNumber: any =1) {
 
-    this.ourService.getDataById(this.myId).subscribe(
+    this.myPage = pageNumber;
+    this.ourService.getDataByPageNumber(pageNumber).subscribe(
       (res) => {
         this.myData = res;
-        console.log(this.myData);
       },
       (err) => {
         alert(err);
@@ -73,25 +68,23 @@ export class ReposComponent implements OnInit {
   //------------------------------------------------------
 
   prevPage() {
-    if (this.myId > 1)
-      this.ourService.getDataById(this.myId--).subscribe(
+    if (this.myPage > 1)
+      this.ourService.getDataByPageNumber(this.myPage--).subscribe(
         (res) => {
           this.myData = res;
-          console.log(this.myData.items);
         },
         (err) => {
-          alert(err);
+          console.log(err);
         }
       );
-    else if (this.myId == 1) {
-      this.myId = 10;
-      this.ourService.getDataById(this.myId).subscribe(
+    else if (this.myPage == 1) {
+      this.myPage = 10;
+      this.ourService.getDataByPageNumber(this.myPage).subscribe(
         (res) => {
           this.myData = res;
-          console.log(this.myData.items);
         },
         (err) => {
-          alert(err);
+          console.log(err);
         }
       );
     }
@@ -102,22 +95,20 @@ export class ReposComponent implements OnInit {
   //------------------------------------------------------
 
   nextPage() {
-    if (this.myId < 10)
-      this.ourService.getDataById(this.myId++).subscribe(
+    if (this.myPage < 10)
+      this.ourService.getDataByPageNumber(this.myPage++).subscribe(
         (res) => {
           this.myData = res;
-          console.log(this.myData.items);
         },
         (err) => {
           alert(err);
         }
       );
-    else if (this.myId == 10) {
-      this.myId = 1;
-      this.ourService.getDataById(this.myId).subscribe(
+    else if (this.myPage == 10) {
+      this.myPage = 1;
+      this.ourService.getDataByPageNumber(this.myPage).subscribe(
         (res) => {
           this.myData = res;
-          console.log(this.myData.items);
         },
         (err) => {
           alert(err);
@@ -125,4 +116,5 @@ export class ReposComponent implements OnInit {
       );
     }
   }
+
 }
